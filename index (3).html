@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>fl0ppyseal – all my sites</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦭</text></svg>">
+<style>
+:root{--bg:#0a0a0b;--card:#151517;--ink:#f5f2ed;--mut:#9b958c;--acc:#ff7a1a;--line:#2a2a2e;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(900px 420px at 50% -120px,rgba(255,122,26,.22),transparent 70%),var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:980px;margin:0 auto;padding:56px 16px 40px}
+header{text-align:center;margin-bottom:28px}
+.logo{font-size:3.2rem;line-height:1}
+h1{font:700 3rem/1.1 "Iowan Old Style",Georgia,serif;margin:8px 0 4px;letter-spacing:-1px}
+h1 span{color:var(--acc)}
+.sub{color:var(--mut);margin:0}
+input{width:100%;font:inherit;font-size:1.1rem;padding:14px 18px;border:2px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);transition:border-color .15s,box-shadow .15s}
+input::placeholder{color:var(--mut)}
+input:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 4px rgba(255,122,26,.18)}
+.cats{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 22px;justify-content:center}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 16px;transition:border-color .15s,color .15s}
+button:hover{border-color:var(--acc);color:var(--acc)}
+button.on,button.on:hover{background:var(--acc);color:#0a0a0b;border-color:var(--acc);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+a.card{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-top:2px solid var(--acc);border-radius:16px;padding:18px 20px;transition:transform .15s,border-color .15s}
+a.card:hover{transform:translateY(-3px);border-color:var(--acc)}
+.ic{font-size:1.8rem;line-height:1}
+.nm{font-weight:700;font-size:1.15rem;margin:10px 0 2px}
+.ds{color:var(--mut);font-size:.92rem;margin:0 0 10px}
+.ft{display:flex;justify-content:space-between;gap:8px;font-size:.8rem;color:var(--mut)}
+.ft b{color:var(--acc);font-weight:600;white-space:nowrap}
+.ft i{font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.none{text-align:center;color:var(--mut);padding:40px 0}
+footer{text-align:center;color:var(--mut);font-size:.85rem;margin-top:44px}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="logo">🦭</div>
+<h1>fl0ppy<span>seal</span></h1>
+<p class="sub">Everything I’ve made, and a few things I like.</p>
+</header>
+<input id="q" type="search" placeholder="Search my sites…" autocomplete="off" spellcheck="false">
+<div class="cats" id="cats"></div>
+<div class="grid" id="grid"></div>
+<footer>© <span id="yr"></span> fl0ppyseal</footer>
+</main>
+<script>
+/* ============ EDIT YOUR LINKS HERE ============
+   name: title shown on the card
+   url:  full address (starting with https://)
+   desc: one short line
+   cat:  category (a filter button is made for each one automatically)
+   icon: any emoji
+   Add, remove or reorder lines freely. Keep a comma after each line.
+================================================ */
+const LINKS=[
+{name:"Niche Bescherelle",url:"https://fl0ppyseal.github.io/Niche-Bescherelle/",desc:"French verb conjugator. Finds the verb from any form.",cat:"Mine",icon:"📘"},
+{name:"French Dictionary",url:"https://fl0ppyseal.github.io/French-Dictionary/",desc:"French to English and English to French dictionary.",cat:"Mine",icon:"📕"},
+{name:"City Upgrade",url:"https://fl0ppyseal.github.io/City-upgrade/",desc:"Build up your city and upgrade it.",cat:"Mine",icon:"🏙️"},
+{name:"Temu Typist",url:"https://justsushizz.github.io/Temu-Typist/",desc:"A typing game.",cat:"Mine",icon:"⌨️"}
+];
+const $=id=>document.getElementById(id),esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const cats=["All",...new Set(LINKS.map(l=>l.cat))];
+let cat="All";
+const dom=u=>{try{const x=new URL(u);return x.hostname+(x.pathname.length>1?x.pathname.replace(/\/$/,""):"")}catch(e){return u}};
+function draw(){
+  const q=$("q").value.trim().toLowerCase();
+  const r=LINKS.filter(l=>(cat=="All"||l.cat==cat)&&(l.name+" "+l.desc+" "+l.cat+" "+l.url).toLowerCase().includes(q));
+  $("grid").innerHTML=r.length?r.map(l=>'<a class="card" href="'+esc(l.url)+'" target="_blank" rel="noopener"><div class="ic">'+l.icon+'</div><div class="nm">'+esc(l.name)+'</div><p class="ds">'+esc(l.desc)+'</p><div class="ft"><i>'+esc(dom(l.url))+'</i><b>Open ↗</b></div></a>').join(""):'<p class="none" style="grid-column:1/-1">Nothing matches that.</p>';
+  $("cats").innerHTML=cats.map(c=>'<button data-c="'+esc(c)+'"'+(c==cat?' class="on"':'')+'>'+esc(c)+'</button>').join("");
+}
+$("q").addEventListener("input",draw);
+$("cats").addEventListener("click",e=>{const c=e.target.dataset.c;if(c){cat=c;draw()}});
+$("yr").textContent=new Date().getFullYear();
+draw();
+</script>
+</body>
+</html>
